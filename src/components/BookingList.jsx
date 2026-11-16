@@ -18,7 +18,7 @@ export default function BookingList({ title = "Bookings", basePath, showCustomer
     { key: "booking_no", label: "Booking", render: (b) => <span className="font-mono text-xs font-semibold">{b.booking_no}</span> },
     { key: "service_name", label: "Service" },
     ...(showCustomer ? [{ key: "customer_name", label: "Customer" }] : []),
-    ...(showPartner ? [{ key: "partner_name", label: "Provider" }] : []),
+    ...(showPartner ? [{ key: "partner_name", label: "Provider", render: (b) => b.partner_name || <span className="text-amber-700">Finding a pro…</span> }] : []),
     { key: "scheduled_start", label: "When", render: (b) => dateTime(b.scheduled_start) },
     { key: "total", label: "Amount", render: (b) => money(b.total) },
     { key: "status", label: "Status", render: (b) => <Badge status={b.status} /> },

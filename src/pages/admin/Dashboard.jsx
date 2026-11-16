@@ -15,7 +15,7 @@ export default function AdminDashboard() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard icon={IndianRupee} tone="green" label="GMV this month" value={money(d.gmv_month)} hint={`Commission ${money(d.commission_month)} · Subscriptions ${money(d.subscription_revenue_month)}`} />
         <StatCard icon={ShoppingBag} label="Bookings today" value={d.bookings_today} hint={`${d.live_jobs} live jobs`} />
-        <StatCard icon={AlertTriangle} tone={d.sla_breaches ? "red" : "green"} label="Acceptance SLA breaches" value={d.sla_breaches} />
+        <StatCard icon={AlertTriangle} tone={d.sla_breaches ? "red" : "green"} label="Acceptance SLA breaches" value={d.sla_breaches} hint={`${d.searching_now ?? 0} bookings searching for a pro`} />
         <StatCard icon={BadgeCheck} tone="amber" label="Pending verifications" value={<Link to="/admin/verification" className="hover:underline">{d.pending_verifications}</Link>} />
         <StatCard icon={Users} label="Partners (approved / total)" value={`${d.partners.approved} / ${d.partners.total}`} hint={`${d.coworkers} coworkers`} />
         <StatCard icon={Activity} label="Customers" value={d.customers} />
