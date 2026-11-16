@@ -78,6 +78,7 @@ export default function JobRequests() {
               <ul className="text-sm text-slate-600">
                 {r.items.map((i) => <li key={i.name}>{i.name} × {i.quantity} — {money(i.total)}</li>)}
               </ul>
+              {r.bring_supplies && <p className="rounded bg-emerald-50 p-2 text-sm text-emerald-800">Bring supplies kit: {r.supplies_list.join(", ")}</p>}
               {r.notes && <p className="rounded bg-slate-50 p-2 text-sm">Note: {r.notes}</p>}
               <div className="flex items-center justify-between border-t pt-3">
                 <div>

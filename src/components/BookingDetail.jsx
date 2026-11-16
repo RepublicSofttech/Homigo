@@ -181,6 +181,13 @@ export default function BookingDetail() {
         </div>
       )}
 
+      {b.bring_supplies && !["completed", "cancelled"].includes(s) && (
+        <div className="card border-emerald-200 bg-emerald-50 text-sm">
+          <p className="font-semibold text-emerald-900">{role === "customer" ? "The professional will bring the supplies kit" : "Carry the supplies kit for this job"}</p>
+          <p className="text-emerald-800">{b.supplies_list.join(" · ")}{b.supplies_confirmed ? " — confirmed at start" : ""}</p>
+        </div>
+      )}
+
       {pendingAddons.length > 0 && role === "customer" && (
         <div className="card border-amber-300 bg-amber-50">
           <p className="mb-2 font-semibold text-amber-900">Approve extra work</p>
@@ -240,6 +247,7 @@ export default function BookingDetail() {
                 </div>
               ))}
               {Number(b.visit_charge) > 0 && <div className="flex justify-between"><span>Visit charge</span><span>{money(b.visit_charge)}</span></div>}
+              {b.bring_supplies && <div className="flex justify-between"><span>Supplies kit</span><span>{Number(b.supplies_charge) > 0 ? money(b.supplies_charge) : "Included"}</span></div>}
               {Number(b.discount) > 0 && <div className="flex justify-between text-emerald-700"><span>Discount {b.coupon_code}</span><span>-{money(b.discount)}</span></div>}
               <div className="flex justify-between text-slate-500"><span>Convenience fee + tax</span><span>{money(Number(b.convenience_fee) + Number(b.tax))}</span></div>
               <div className="flex justify-between border-t pt-2 text-base font-bold"><span>Total</span><span>{money(b.total)}</span></div>
@@ -304,8 +312,15 @@ export default function BookingDetail() {
       </Modal>
       <Modal open={modal === "start" || modal === "complete"} onClose={() => setModal(null)} title={modal === "start" ? "Enter start OTP" : "Enter completion OTP"}>
         <p className="mb-3 text-sm text-slate-500">Ask the customer for the 4-digit OTP shown in their app.</p>
-        <input className="input text-center text-xl tracking-[0.5em]" maxLength={6} value={input.otp || ""} onChange={(e) => setInput({ otp: e.target.value.replace(/\D/g, "") })} />
-        <button className="btn-primary mt-3 w-full" disabled={!input.otp} onClick={() => run(modal, { otp: input.otp })}>Verify</button>
+        <input className="input text-center text-xl tracking-[0.5em]" maxLength={6} value={input.otp || ""} onChange={(e) => setInput({ ...input, otp: e.target.value.replace(/\D/g, "") })} />
+        {modal === "start" && b.bring_supplies && (
+          <label className="mt-3 flex items-start gap-2 rounded-lg bg-emerald-50 p-3 text-sm">
+            <input type="checkbox" className="mt-1" checked={!!input.kit} onChange={(e) => setInput({ ...input, kit: e.target.checked })} />
+            <span>I have the full supplies kit: {b.supplies_list.join(", ")}</span>
+          </label>
+        )}
+        <button className="btn-primary mt-3 w-full" disabled={!input.otp || (modal === "start" && b.bring_supplies && !input.kit)}
+          onClick={() => run(modal, modal === "start" ? { otp: input.otp, kit_confirmed: !!input.kit } : { otp: input.otp })}>Verify</button>
       </Modal>
       <Modal open={modal === "addon"} onClose={() => setModal(null)} title="Add extra work / material">
         <div className="space-y-3">

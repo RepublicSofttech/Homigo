@@ -28,6 +28,7 @@ export default function Jobs() {
                 <Badge status={b.status} />
               </div>
               <p className="mt-2 flex items-center gap-1 text-sm text-slate-600"><MapPin className="h-4 w-4" /> {b.address.line1}, {b.address.city}</p>
+              {b.bring_supplies && <p className="mt-1 text-xs font-medium text-emerald-700">Carry supplies kit</p>}
               {b.payment_mode === "cash" && <p className="mt-1 text-xs text-amber-700">Collect {money(b.total)} cash/UPI</p>}
             </Link>
           ))}
