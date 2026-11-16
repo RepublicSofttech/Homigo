@@ -112,10 +112,20 @@ export default function BookingDetail() {
         <div>
           <p className="font-mono text-sm text-slate-500">{b.booking_no}</p>
           <h1 className="text-2xl font-bold">{b.service_name}</h1>
-          <p className="text-sm text-slate-500">{dateTime(b.scheduled_start)} · {b.partner_name}</p>
+          <p className="text-sm text-slate-500">{dateTime(b.scheduled_start)} · {b.partner_name || "Finding the nearest professional"}</p>
         </div>
         <Badge status={s}>{b.status_label}</Badge>
       </div>
+
+      {s === "searching" && b.searching && (
+        <div className="card flex items-center gap-3 border-amber-200 bg-amber-50">
+          <span className="relative flex h-3 w-3"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" /><span className="relative inline-flex h-3 w-3 rounded-full bg-amber-500" /></span>
+          <div className="text-sm">
+            <p className="font-semibold text-amber-900">Finding the nearest professional…</p>
+            <p className="text-amber-800">Sent to {b.searching.partners_notified} nearby verified {b.searching.partners_notified === 1 ? "partner" : "partners"} (round {b.searching.round}). The first to accept gets your job. You will be notified.</p>
+          </div>
+        </div>
+      )}
 
       {role === "customer" && ["assigned", "on_the_way", "arrived", "in_progress", "completion_requested"].includes(s) && (
         <div className="grid gap-3 sm:grid-cols-2">

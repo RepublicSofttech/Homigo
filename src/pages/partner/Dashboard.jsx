@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, CalendarCheck, Clock, IndianRupee, Star, Wallet } from "lucide-react";
+import { AlertTriangle, BellRing, CalendarCheck, Clock, IndianRupee, Star, Wallet } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, errorCode } from "../../api/client";
 import { Badge, DataTable, PageHeader, PageLoader, StatCard } from "../../components/ui";
@@ -29,6 +29,7 @@ export default function PartnerDashboard() {
         </div>
       )}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <StatCard icon={BellRing} tone="amber" label="Open job requests" value={<Link to="/partner/requests" className="hover:underline">{d.job_requests}</Link>} hint="First to accept gets the job" />
         <StatCard icon={Clock} tone="amber" label="Pending acceptance" value={d.pending_acceptance} hint="Accept within SLA" />
         <StatCard icon={CalendarCheck} label="Today's jobs" value={d.today_jobs} hint={`${d.in_progress} in progress`} />
         <StatCard icon={IndianRupee} tone="green" label="Earnings this month" value={money(d.earnings_month)} hint={`Today ${money(d.earnings_today)}`} />

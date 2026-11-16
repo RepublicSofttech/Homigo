@@ -1,5 +1,5 @@
 import {
-  BadgeCheck, BarChart3, Bell, Briefcase, CalendarCheck, ClipboardList, CreditCard, Headphones, LayoutDashboard,
+  BadgeCheck, BarChart3, Bell, BellRing, Briefcase, CalendarCheck, ClipboardList, CreditCard, Headphones, LayoutDashboard,
   ListChecks, Settings as SettingsIcon, ShieldCheck, Star, Tag, UserCog, Users as UsersIcon, Wallet, Wrench,
 } from "lucide-react";
 import { Route, Routes } from "react-router-dom";
@@ -17,6 +17,7 @@ import Account from "./pages/customer/Account";
 import Support from "./pages/customer/Support";
 import PartnerDashboard from "./pages/partner/Dashboard";
 import Earnings from "./pages/partner/Earnings";
+import JobRequests from "./pages/partner/JobRequests";
 import Onboarding from "./pages/partner/Onboarding";
 import RateCard from "./pages/partner/RateCard";
 import PartnerReviews from "./pages/partner/Reviews";
@@ -31,6 +32,7 @@ import { About, Offers, PartnerJoin } from "./pages/public/Static";
 
 const partnerMenu = [
   { to: "/partner", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/partner/requests", label: "Job requests", icon: BellRing },
   { to: "/partner/bookings", label: "Bookings", icon: CalendarCheck },
   { to: "/partner/team", label: "Team", icon: UsersIcon },
   { to: "/partner/rate-card", label: "Rate card", icon: ListChecks },
@@ -90,6 +92,7 @@ export default function App() {
       <Route path="partner" element={<RequireAuth roles={["partner"]}><PanelLayout menu={partnerMenu} title="Partner panel" /></RequireAuth>}>
         <Route index element={<PartnerDashboard />} />
         <Route path="onboarding" element={<Onboarding />} />
+        <Route path="requests" element={<JobRequests />} />
         <Route path="bookings" element={<BookingList title="Bookings" basePath="/partner/bookings" showCustomer statusFilter />} />
         <Route path="bookings/:id" element={<BookingDetail />} />
         <Route path="team" element={<Team />} />

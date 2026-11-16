@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { BadgeCheck, MapPin, Minus, Plus, ShieldCheck, Star, Users } from "lucide-react";
+import { BadgeCheck, MapPin, Minus, Plus, ShieldCheck, Star, Users, Zap } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -42,6 +42,8 @@ export default function ServiceDetail() {
   const [addressId, setAddressId] = useState(null);
   const [addrOpen, setAddrOpen] = useState(false);
   const [partnerId, setPartnerId] = useState(null);
+  // "nearest" = send to the nearest verified pros, first to accept gets it (gap P1); "choose" = pick a provider
+  const [mode, setMode] = useState("nearest");
   const [qty, setQty] = useState({});
   const [day, setDay] = useState(todayISO());
   const [slot, setSlot] = useState(null);
@@ -68,12 +70,18 @@ export default function ServiceDetail() {
   });
   const options = useMemo(() => (avail.data?.available ? [avail.data.partner, ...avail.data.alternatives] : []), [avail.data]);
   const partner = options.find((p) => p.id === partnerId) || options[0];
+  const available = !!avail.data?.available;
+  const chosen = mode === "choose" ? partner : null;
+  // Items to pick from: the chosen provider's rate card, or platform prices for "nearest available"
+  const rows = chosen
+    ? chosen.rate_card
+    : (service.data?.items || []).map((i) => ({ id: i.id, service_item: i.id, item_name: i.name, price: i.default_price, unit_label: i.unit_label }));
 
   useEffect(() => {
     setPartnerId(options[0]?.id || null);
     setQty({});
     setSlot(null);
-  }, [options]);
+  }, [options, mode]);
 
   const items = Object.entries(qty).filter(([, q]) => q > 0).map(([sid, q]) => ({ service_item: Number(sid), quantity: q }));
   const duration = Math.max(
@@ -82,15 +90,17 @@ export default function ServiceDetail() {
   );
 
   const slots = useQuery({
-    queryKey: ["slots", partner?.id, id, day, duration],
-    queryFn: () => api.get(`/slots/?partner_id=${partner.id}&service_id=${id}&date=${day}&duration=${duration}`).then((r) => r.data.slots),
-    enabled: !!partner,
+    queryKey: ["slots", chosen?.id, point.lat, point.lng, id, day, duration],
+    queryFn: () =>
+      api.get(`/slots/?service_id=${id}&date=${day}&duration=${duration}&` + (chosen ? `partner_id=${chosen.id}` : `lat=${point.lat}&lng=${point.lng}`))
+        .then((r) => r.data.slots),
+    enabled: available,
   });
 
   const preview = useQuery({
-    queryKey: ["preview", partner?.id, JSON.stringify(items), appliedCoupon],
-    queryFn: () => api.post("/bookings/price-preview/", { service_id: Number(id), partner_id: partner.id, items, coupon_code: appliedCoupon }).then((r) => r.data),
-    enabled: !!partner && items.length > 0,
+    queryKey: ["preview", chosen?.id, JSON.stringify(items), appliedCoupon],
+    queryFn: () => api.post("/bookings/price-preview/", { service_id: Number(id), partner_id: chosen?.id ?? null, items, coupon_code: appliedCoupon }).then((r) => r.data),
+    enabled: available && items.length > 0,
     retry: false,
   });
 
@@ -104,7 +114,7 @@ export default function ServiceDetail() {
   const book = useMutation({
     mutationFn: () =>
       api.post("/bookings/", {
-        service_id: Number(id), partner_id: partner.id, address_id: addressId, items, scheduled_start: slot,
+        service_id: Number(id), ...(chosen ? { partner_id: chosen.id } : {}), address_id: addressId, items, scheduled_start: slot,
         payment_mode: paymentMode, coupon_code: appliedCoupon, notes, answers,
         booking_type: service.data.booking_types?.[0] === "instant" ? "scheduled" : service.data.booking_types?.[0] || "scheduled",
       }).then((r) => r.data),
@@ -153,21 +163,31 @@ export default function ServiceDetail() {
           </div>
 
           <div className="card">
-            <h2 className="mb-3 font-semibold">2. Your nearest provider</h2>
-            {avail.isLoading ? <PageLoader /> : !avail.data?.available ? (
+            <h2 className="mb-3 font-semibold">2. Who should come?</h2>
+            {avail.isLoading ? <PageLoader /> : !available ? (
               <Empty title="Not available in your area yet" text="We are adding partners in new areas every week. Try another location." />
             ) : (
               <div className="space-y-3">
-                {options.map((p) => <PartnerCard key={p.id} p={p} selected={p.id === partner?.id} onSelect={() => { setPartnerId(p.id); setQty({}); setSlot(null); }} />)}
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <button onClick={() => setMode("nearest")} className={`rounded-xl border p-4 text-left ${mode === "nearest" ? "border-brand-600 bg-brand-50 ring-2 ring-brand-100" : "border-slate-200 bg-white"}`}>
+                    <p className="flex items-center gap-2 font-semibold"><Zap className="h-4 w-4 text-accent-500" /> Nearest available pro</p>
+                    <p className="mt-1 text-xs text-slate-500">We send your request to the {options.length > 1 ? "nearest verified pros" : "nearest verified pro"}. The first to accept gets the job. Standard price.</p>
+                  </button>
+                  <button onClick={() => setMode("choose")} className={`rounded-xl border p-4 text-left ${mode === "choose" ? "border-brand-600 bg-brand-50 ring-2 ring-brand-100" : "border-slate-200 bg-white"}`}>
+                    <p className="flex items-center gap-2 font-semibold"><Users className="h-4 w-4 text-brand-600" /> Choose a provider</p>
+                    <p className="mt-1 text-xs text-slate-500">Compare {options.length} nearby {options.length === 1 ? "provider" : "providers"} by distance, rating and price.</p>
+                  </button>
+                </div>
+                {mode === "choose" && options.map((p) => <PartnerCard key={p.id} p={p} selected={p.id === partner?.id} onSelect={() => { setPartnerId(p.id); setQty({}); setSlot(null); }} />)}
               </div>
             )}
           </div>
 
-          {partner && (
+          {available && (
             <div className="card">
               <h2 className="mb-3 font-semibold">3. Select items</h2>
               <div className="divide-y">
-                {partner.rate_card.map((r) => (
+                {rows.map((r) => (
                   <div key={r.id} className="flex items-center justify-between gap-3 py-3">
                     <div>
                       <p className="font-medium">{r.item_name}</p>
@@ -201,7 +221,7 @@ export default function ServiceDetail() {
             </div>
           )}
 
-          {partner && items.length > 0 && (
+          {available && items.length > 0 && (
             <div className="card">
               <h2 className="mb-3 font-semibold">4. Pick a date & time</h2>
               <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
