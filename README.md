@@ -1,4 +1,4 @@
-# HomeServ – Web Frontend
+# Homigo – Web Frontend
 
 React 18 + Vite + Tailwind CSS + React Query + React Hook Form.
 One web app with four areas:

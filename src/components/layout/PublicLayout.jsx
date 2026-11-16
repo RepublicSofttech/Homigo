@@ -15,7 +15,7 @@ export function Logo({ dark }) {
         <Home className="h-5 w-5 text-white" />
       </span>
       <span className={`text-lg font-bold ${dark ? "text-white" : "text-slate-900"}`}>
-        Home<span className="text-brand-600">Serv</span>
+        Homi<span className="text-brand-600">go</span>
       </span>
     </Link>
   );
@@ -164,7 +164,7 @@ export default function PublicLayout() {
             <p className="py-1">Cancellation & Refund</p>
           </div>
         </div>
-        <p className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">© {new Date().getFullYear()} HomeServ. All rights reserved.</p>
+        <p className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">© {new Date().getFullYear()} Homigo. All rights reserved.</p>
       </footer>
     </div>
   );

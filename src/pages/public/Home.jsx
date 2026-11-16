@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { api, listOf } from "../../api/client";
 import { useLocation2 } from "../../context/LocationContext";
 import { iconFor } from "../../lib/icons";
-import { money } from "../../lib/format";
+import { money, plural } from "../../lib/format";
 import { PageLoader } from "../../components/ui";
 
 export function ServiceCard({ s }) {
@@ -60,7 +60,7 @@ export default function Home() {
                 <Link key={c.id} to={`/services?category=${c.id}`} className="card flex flex-col items-center gap-2 text-center hover:shadow-md">
                   <div className="rounded-full bg-brand-50 p-3 text-brand-600"><Icon className="h-6 w-6" /></div>
                   <span className="text-sm font-medium">{c.name}</span>
-                  <span className="text-xs text-slate-400">{c.service_count} services</span>
+                  <span className="text-xs text-slate-400">{plural(c.service_count, "service")}</span>
                 </Link>
               );
             })}

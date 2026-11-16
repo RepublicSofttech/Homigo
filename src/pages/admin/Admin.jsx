@@ -148,7 +148,7 @@ export function OffersAdmin({ partner }) {
     { name: "banner_color", label: "Banner colour", type: "color" }, { name: "description", label: "Description", type: "textarea" },
   ];
   return <CrudPage title={partner ? "My offers" : "Offers & coupons"} subtitle={partner ? "Partner-funded discounts for your customers" : undefined} endpoint={partner ? "/partner/offers/" : "/admin/offers/"}
-    columns={[{ key: "code", label: "Code", render: (r) => <span className="font-mono font-bold">{r.code}</span> }, { key: "title", label: "Title" }, { key: "value", label: "Discount", render: (r) => (r.discount_type === "flat" ? money(r.value) : `${r.value}%`) }, { key: "funded_by", label: "Funded by" }, { key: "used_count", label: "Used" }, { key: "valid_to", label: "Valid till", render: (r) => dateOnly(r.valid_to) }, { key: "is_active", label: "Active", render: (r) => <Badge status={r.is_active ? "active" : "inactive"} /> }]}
+    columns={[{ key: "code", label: "Code", render: (r) => <span className="font-mono font-bold">{r.code}</span> }, { key: "title", label: "Title" }, { key: "value", label: "Discount", render: (r) => (r.discount_type === "flat" ? money(r.value) : `${Number(r.value)}%`) }, { key: "funded_by", label: "Funded by" }, { key: "used_count", label: "Used" }, { key: "valid_to", label: "Valid till", render: (r) => dateOnly(r.valid_to) }, { key: "is_active", label: "Active", render: (r) => <Badge status={r.is_active ? "active" : "inactive"} /> }]}
     fields={fields}
     defaults={{ discount_type: "flat", per_user_limit: 1, min_order_value: 0, is_active: true, funded_by: "platform", partner_share_percent: 0, banner_color: "#4F46E5", valid_from: new Date().toISOString(), valid_to: new Date(Date.now() + 30 * 864e5).toISOString() }} />;
 }

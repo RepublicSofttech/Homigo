@@ -98,7 +98,7 @@ export default function Team() {
   const current = docs && list.data.find((c) => c.id === docs);
   return (
     <div>
-      <PageHeader title="Team" subtitle="Coworkers must be verified by HomeServ before they can get jobs" actions={<button className="btn-primary" onClick={() => setEdit({})}><Plus className="h-4 w-4" /> Add coworker</button>} />
+      <PageHeader title="Team" subtitle="Coworkers must be verified by Homigo before they can get jobs" actions={<button className="btn-primary" onClick={() => setEdit({})}><Plus className="h-4 w-4" /> Add coworker</button>} />
       <DataTable rows={list.data} empty="No coworkers yet" columns={[
         { key: "name", label: "Name", render: (c) => <div><p className="font-medium">{c.name}</p><p className="text-xs text-slate-500">{c.phone}</p></div> },
         { key: "skill_names", label: "Skills", render: (c) => c.skill_names.join(", ") || "-" },

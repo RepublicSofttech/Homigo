@@ -176,7 +176,7 @@ export default function BookingDetail() {
           </>
         )}
         {field && s === "completion_requested" && <button className="btn-primary" onClick={() => setModal("complete")}>Complete with OTP</button>}
-        {field && b.payment_mode === "cash" && ["in_progress", "completion_requested", "completed"].includes(s) && !b.cash_collected && (
+        {field && b.payment_mode === "cash" && ["in_progress", "completion_requested"].includes(s) && !b.cash_collected && (
           <button className="btn-secondary" onClick={() => run("cash-collected")}>Mark cash collected ({money(b.total)})</button>
         )}
         {role === "customer" && s === "completion_requested" && <button className="btn-success" onClick={() => run("confirm-completion")}>Confirm work completed</button>}
@@ -184,8 +184,8 @@ export default function BookingDetail() {
         {role === "customer" && <Link to={`/support?booking=${b.id}`} className="btn-secondary">Need help?</Link>}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <div className="card">
             <h3 className="mb-3 font-semibold">Items & bill</h3>
             <div className="space-y-1 text-sm">

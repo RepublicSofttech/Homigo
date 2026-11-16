@@ -32,9 +32,9 @@ export function Offers() {
 export function About() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl font-bold">About HomeServ</h1>
+      <h1 className="text-3xl font-bold">About Homigo</h1>
       <p className="mt-4 text-slate-600">
-        HomeServ is a door-to-door services marketplace. Every booking is handled by a verified local Area Partner and their team of
+        Homigo is a door-to-door services marketplace. Every booking is handled by a verified local Area Partner and their team of
         background-checked professionals. We cover home repair, cleaning and domestic help, security, health at home, events, daily essentials and more.
       </p>
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -57,7 +57,7 @@ export function PartnerJoin() {
     <div>
       <section className="bg-slate-900 text-white">
         <div className="mx-auto max-w-6xl px-4 py-16">
-          <h1 className="max-w-2xl text-4xl font-bold">Grow your service business with HomeServ</h1>
+          <h1 className="max-w-2xl text-4xl font-bold">Grow your service business with Homigo</h1>
           <p className="mt-4 max-w-xl text-slate-300">Get bookings from customers near you, manage your team, rate card and earnings from one dashboard.</p>
           <Link to="/login?as=partner" className="btn mt-8 bg-accent-500 text-white hover:bg-accent-600">Register as partner</Link>
         </div>
@@ -75,7 +75,7 @@ export function PartnerJoin() {
               <div key={p.id} className="card">
                 <p className="text-lg font-bold">{p.name}</p>
                 <p className="mt-2 text-3xl font-bold">{money(p.price)}<span className="text-sm font-normal text-slate-500"> / {p.duration_days} days</span></p>
-                <p className="mt-1 text-sm text-slate-600">{p.commission_percent}% commission per completed booking</p>
+                <p className="mt-1 text-sm text-slate-600">{Number(p.commission_percent)}% commission per completed booking</p>
                 <ul className="mt-4 space-y-1 text-sm text-slate-600">{p.features.map((f) => <li key={f}>✓ {f}</li>)}</ul>
               </div>
             ))}
