@@ -34,7 +34,7 @@ export default function Subscription() {
             <div>
               <p className="text-sm text-slate-500">Current plan</p>
               <p className="text-xl font-bold">{c.plan_detail.name} <Badge status={c.in_grace ? "pending" : c.status} >{c.in_grace ? "Grace period" : c.status}</Badge></p>
-              <p className="text-sm">{dateOnly(c.start_date)} – {dateOnly(c.end_date)} · {c.days_left} days left · {c.plan_detail.commission_percent}% commission</p>
+              <p className="text-sm">{dateOnly(c.start_date)} – {dateOnly(c.end_date)} · {c.days_left} days left · {Number(c.plan_detail.commission_percent)}% commission</p>
             </div>
             {c.status === "active" && <button className="btn-secondary" onClick={() => window.confirm("Cancel this plan? It stays active till the end date.") && cancel.mutate(c.id)}>Cancel plan</button>}
           </div>
@@ -45,7 +45,7 @@ export default function Subscription() {
           <div key={p.id} className={`card flex flex-col ${c?.plan === p.id ? "ring-2 ring-brand-600" : ""}`}>
             <p className="text-lg font-bold">{p.name}</p>
             <p className="mt-1 text-3xl font-bold">{money(p.price)}<span className="text-sm font-normal text-slate-500"> / {p.duration_days} days</span></p>
-            <p className="text-sm text-slate-600">{p.commission_percent}% commission · {p.max_coworkers ? `${p.max_coworkers} coworkers` : "Unlimited coworkers"}</p>
+            <p className="text-sm text-slate-600">{Number(p.commission_percent)}% commission · {p.max_coworkers ? `${p.max_coworkers} coworkers` : "Unlimited coworkers"}</p>
             <ul className="my-4 flex-1 space-y-1 text-sm text-slate-600">{p.features.map((f) => <li key={f}>✓ {f}</li>)}</ul>
             <button className="btn-primary" onClick={() => subscribe.mutate(p.id)} disabled={subscribe.isPending}>{c ? "Renew / switch" : "Subscribe"}</button>
           </div>

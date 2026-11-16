@@ -38,7 +38,7 @@ export default function RateCard() {
                     <p className="font-medium">{item.name}</p>
                     <p className="text-xs text-slate-500">Allowed {money(item.price_floor)} – {money(item.price_ceiling)} / {item.unit_label} · suggested {money(item.default_price)}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <input className="input w-28" type="number" value={val} onChange={(e) => setPrices({ ...prices, [item.id]: e.target.value })} />
                     {rate ? (
                       <>

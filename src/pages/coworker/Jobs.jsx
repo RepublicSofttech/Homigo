@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/client";
 import { Badge, Empty, PageHeader, PageLoader, Tabs } from "../../components/ui";
-import { dateTime, money } from "../../lib/format";
+import { dateTime, money, plural } from "../../lib/format";
 
 export default function Jobs() {
   const [tab, setTab] = useState("today");
@@ -13,8 +13,8 @@ export default function Jobs() {
   const prof = data.profile[0];
   return (
     <div>
-      <PageHeader title="My jobs" subtitle={prof ? `${prof.partner} · ★ ${Number(prof.rating).toFixed(1)} · ${prof.jobs_completed} jobs done` : "Not linked to a partner yet"} />
-      {prof && prof.verification_status !== "approved" && <p className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800">Your profile is <b>{prof.verification_status.replace(/_/g, " ")}</b>. You will get jobs after HomeServ approves it.</p>}
+      <PageHeader title="My jobs" subtitle={prof ? `${prof.partner} · ★ ${Number(prof.rating).toFixed(1)} · ${plural(prof.jobs_completed, "job")} done` : "Not linked to a partner yet"} />
+      {prof && prof.verification_status !== "approved" && <p className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800">Your profile is <b>{prof.verification_status.replace(/_/g, " ")}</b>. You will get jobs after Homigo approves it.</p>}
       <Tabs tabs={["today", "upcoming", "completed"]} value={tab} onChange={setTab} />
       {!data[tab].length ? <Empty title="No jobs" /> : (
         <div className="space-y-3">

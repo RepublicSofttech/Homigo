@@ -81,7 +81,7 @@ export default function Login() {
         <div className="card">
           <h1 className="text-xl font-bold">{asPartner ? "Partner login / sign up" : "Login or sign up"}</h1>
           <p className="mb-4 text-sm text-slate-500">
-            {asPartner ? "Grow your service business with HomeServ." : "Use your mobile number to continue."}
+            {asPartner ? "Grow your service business with Homigo." : "Use your mobile number to continue."}
           </p>
           <Tabs tabs={[{ value: "otp", label: "Mobile OTP" }, { value: "password", label: "Staff (password)" }]} value={mode} onChange={(m) => { setMode(m); setStep(1); }} />
           {mode === "password" ? (

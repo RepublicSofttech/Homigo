@@ -126,8 +126,8 @@ export default function ServiceDetail() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <Link to="/services" className="text-sm text-brand-600">&larr; All services</Link>
-      <div className="mt-3 grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+      <div className="mt-3 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <div className="card">
             <p className="text-sm text-slate-500">{s.category_name}</p>
             <h1 className="text-2xl font-bold">{s.name}</h1>

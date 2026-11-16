@@ -32,7 +32,7 @@ export default function PayModal({ open, onClose, purpose, refId, amount, onPaid
       }
       if (!(await loadRazorpay())) throw new Error("Could not load Razorpay checkout");
       const rzp = new window.Razorpay({
-        key: order.key_id, amount: Math.round(order.amount * 100), currency: "INR", name: "HomeServ", order_id: order.order_id,
+        key: order.key_id, amount: Math.round(order.amount * 100), currency: "INR", name: "Homigo", order_id: order.order_id,
         handler: async (resp) => {
           try {
             await api.post("/payments/verify/", { payment_id: order.payment_id, ...resp });

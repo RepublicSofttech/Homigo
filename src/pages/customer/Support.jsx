@@ -27,7 +27,7 @@ export function TicketThread({ ticket, onChanged, admin }) {
       <div className="max-h-80 space-y-2 overflow-y-auto">
         {ticket.messages.map((m) => (
           <div key={m.id} className={`rounded-lg p-3 text-sm ${m.is_staff ? "bg-brand-50" : "bg-slate-100"}`}>
-            <p className="text-xs font-semibold">{m.is_staff ? "HomeServ Support" : m.sender_name} · {dateTime(m.created_at)}</p>
+            <p className="text-xs font-semibold">{m.is_staff ? "Homigo Support" : m.sender_name} · {dateTime(m.created_at)}</p>
             <p>{m.message}</p>
           </div>
         ))}

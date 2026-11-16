@@ -13,6 +13,8 @@ export const timeOnly = (v) => (v ? new Date(v).toLocaleTimeString("en-IN", { ho
 
 export const titleCase = (s) => (s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
+export const plural = (n, word) => `${n} ${word}${Number(n) === 1 ? "" : "s"}`;
+
 export const todayISO = (offsetDays = 0) => {
   const d = new Date();
   d.setDate(d.getDate() + offsetDays);

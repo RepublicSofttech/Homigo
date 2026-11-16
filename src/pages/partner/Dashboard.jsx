@@ -12,7 +12,7 @@ export default function PartnerDashboard() {
   if (errorCode(error) === "PARTNER_PROFILE_MISSING") {
     return (
       <div className="card text-center">
-        <h2 className="text-xl font-bold">Welcome to HomeServ!</h2>
+        <h2 className="text-xl font-bold">Welcome to Homigo!</h2>
         <p className="mt-2 text-slate-500">Complete your business profile to start receiving bookings.</p>
         <Link to="/partner/onboarding" className="btn-primary mt-4">Start onboarding</Link>
       </div>
