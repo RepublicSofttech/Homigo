@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { BadgeCheck, MapPin, Minus, Plus, ShieldCheck, Star, Users, Zap } from "lucide-react";
+import { BadgeCheck, Briefcase, MapPin, Minus, Plus, ShieldCheck, Star, Users, Zap } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -51,6 +51,7 @@ export default function ServiceDetail() {
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const [paymentMode, setPaymentMode] = useState("cash");
   const [notes, setNotes] = useState("");
+  const [bringKit, setBringKit] = useState(false); // gap C13 (only used when the service kit is optional)
   const [answers, setAnswers] = useState({});
   const [pay, setPay] = useState(null);
 
@@ -98,8 +99,8 @@ export default function ServiceDetail() {
   });
 
   const preview = useQuery({
-    queryKey: ["preview", chosen?.id, JSON.stringify(items), appliedCoupon],
-    queryFn: () => api.post("/bookings/price-preview/", { service_id: Number(id), partner_id: chosen?.id ?? null, items, coupon_code: appliedCoupon }).then((r) => r.data),
+    queryKey: ["preview", chosen?.id, JSON.stringify(items), appliedCoupon, bringKit],
+    queryFn: () => api.post("/bookings/price-preview/", { service_id: Number(id), partner_id: chosen?.id ?? null, items, coupon_code: appliedCoupon, bring_supplies: bringKit }).then((r) => r.data),
     enabled: available && items.length > 0,
     retry: false,
   });
@@ -115,7 +116,7 @@ export default function ServiceDetail() {
     mutationFn: () =>
       api.post("/bookings/", {
         service_id: Number(id), ...(chosen ? { partner_id: chosen.id } : {}), address_id: addressId, items, scheduled_start: slot,
-        payment_mode: paymentMode, coupon_code: appliedCoupon, notes, answers,
+        payment_mode: paymentMode, coupon_code: appliedCoupon, notes, answers, bring_supplies: bringKit,
         booking_type: service.data.booking_types?.[0] === "instant" ? "scheduled" : service.data.booking_types?.[0] || "scheduled",
       }).then((r) => r.data),
     onSuccess: (b) => {
@@ -221,6 +222,21 @@ export default function ServiceDetail() {
             </div>
           )}
 
+          {available && s.supplies_mode !== "none" && s.supplies_list?.length > 0 && (
+            <div className="card border-emerald-200 bg-emerald-50/50">
+              <h2 className="mb-2 flex items-center gap-2 font-semibold"><Briefcase className="h-4 w-4 text-emerald-700" /> Supplies kit</h2>
+              {s.supplies_mode === "included" ? (
+                <p className="text-sm text-slate-700">The professional brings everything needed{Number(s.supplies_charge) > 0 ? ` (kit charge ${money(s.supplies_charge)})` : " — no extra charge"}. You don't need to arrange anything.</p>
+              ) : (
+                <label className="flex items-start gap-2 text-sm">
+                  <input type="checkbox" className="mt-1" checked={bringKit} onChange={(e) => setBringKit(e.target.checked)} />
+                  <span>Ask the professional to bring the kit{Number(s.supplies_charge) > 0 ? ` (+${money(s.supplies_charge)})` : ""}</span>
+                </label>
+              )}
+              <p className="mt-2 text-xs text-slate-500">Kit: {s.supplies_list.join(" · ")}</p>
+            </div>
+          )}
+
           {available && items.length > 0 && (
             <div className="card">
               <h2 className="mb-3 font-semibold">4. Pick a date & time</h2>
@@ -257,6 +273,7 @@ export default function ServiceDetail() {
               <div className="space-y-1 text-sm">
                 {preview.data.lines.map((l) => <div key={l.service_item} className="flex justify-between"><span>{l.name} x{l.quantity}</span><span>{money(l.total)}</span></div>)}
                 {Number(preview.data.visit_charge) > 0 && <div className="flex justify-between"><span>Visit charge</span><span>{money(preview.data.visit_charge)}</span></div>}
+                {preview.data.bring_supplies && <div className="flex justify-between"><span>Supplies kit</span><span>{Number(preview.data.supplies_charge) > 0 ? money(preview.data.supplies_charge) : "Included"}</span></div>}
                 {Number(preview.data.discount) > 0 && <div className="flex justify-between text-emerald-700"><span>Discount ({preview.data.coupon})</span><span>-{money(preview.data.discount)}</span></div>}
                 <div className="flex justify-between text-slate-500"><span>Convenience fee</span><span>{money(preview.data.convenience_fee)}</span></div>
                 <div className="flex justify-between text-slate-500"><span>Taxes</span><span>{money(preview.data.tax)}</span></div>

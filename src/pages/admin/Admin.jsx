@@ -103,10 +103,13 @@ export function Catalogue() {
           { name: "is_active", label: "Active", type: "checkbox" }, { name: "gender_preference_allowed", label: "Gender preference allowed", type: "checkbox" },
           { name: "description", label: "Description", type: "textarea" },
           { name: "questions", label: "Customer questions (JSON)", type: "json", hint: '[{"key":"ac_type","label":"AC type","options":["Split","Window"]}]' },
+          { name: "supplies_mode", label: "Supplies kit", type: "select", options: [{ value: "none", label: "Customer provides" }, { value: "included", label: "Pro always brings kit" }, { value: "optional", label: "Customer can ask for kit" }] },
+          { name: "supplies_charge", label: "Kit charge (₹, 0 = free)", type: "number" },
+          { name: "supplies_list", label: "Kit items (JSON list)", type: "json", hint: '["Mop & bucket", "Floor cleaner"]' },
         ]}
         toForm={(v) => ({ ...v, booking_types: v.booking_types || [] })}
         fromForm={(p) => ({ ...p, booking_types: (p.booking_types || []).map(String) })}
-        defaults={{ is_active: true, radius_km: 5, min_coworkers: 1, warranty_days: 7, visit_charge: 0, booking_types: ["scheduled"] }} />}
+        defaults={{ is_active: true, radius_km: 5, min_coworkers: 1, warranty_days: 7, visit_charge: 0, booking_types: ["scheduled"], supplies_mode: "none", supplies_charge: 0, supplies_list: [] }} />}
       {tab === "items" && <CrudPage title="Service items & price guard-rails" endpoint="/service-items/"
         columns={[{ key: "name", label: "Item" }, { key: "service", label: "Service", render: (r) => svcOpts.find((s) => s.value === r.service)?.label }, { key: "default_price", label: "Default", render: (r) => money(r.default_price) }, { key: "range", label: "Allowed range", render: (r) => `${money(r.price_floor)} – ${money(r.price_ceiling)}` }, { key: "unit_label", label: "Unit" }]}
         fields={[
