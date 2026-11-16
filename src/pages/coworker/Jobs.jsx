@@ -13,7 +13,7 @@ export default function Jobs() {
   const prof = data.profile[0];
   return (
     <div>
-      <PageHeader title="My jobs" subtitle={prof ? `${prof.partner} · ★ ${Number(prof.rating).toFixed(1)} · ${plural(prof.jobs_completed, "job")} done` : "Not linked to a partner yet"} />
+      <PageHeader title="My jobs" subtitle={prof ? `${prof.partner} · ★ ${Number(prof.rating).toFixed(1)} · ${plural(prof.jobs_completed, "job")} done · Tips ${money(prof.tips_total)}` : "Not linked to a partner yet"} />
       {prof && prof.verification_status !== "approved" && <p className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800">Your profile is <b>{prof.verification_status.replace(/_/g, " ")}</b>. You will get jobs after Homigo approves it.</p>}
       <Tabs tabs={["today", "upcoming", "completed"]} value={tab} onChange={setTab} />
       {!data[tab].length ? <Empty title="No jobs" /> : (

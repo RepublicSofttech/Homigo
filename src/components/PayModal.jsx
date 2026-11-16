@@ -21,7 +21,8 @@ export default function PayModal({ open, onClose, purpose, refId, amount, onPaid
   const pay = async () => {
     setBusy(true);
     try {
-      const body = { purpose, ...(purpose === "booking" ? { booking_id: refId } : purpose === "subscription" ? { subscription_id: refId } : { amount }) };
+      const ref = { booking: { booking_id: refId }, subscription: { subscription_id: refId }, tip: { tip_id: refId } }[purpose];
+      const body = { purpose, ...(ref || { amount }) };
       const { data: order } = await api.post("/payments/initiate/", body);
       if (order.gateway === "mock") {
         await api.post("/payments/verify/", { payment_id: order.payment_id });

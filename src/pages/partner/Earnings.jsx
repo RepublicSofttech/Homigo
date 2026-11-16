@@ -20,9 +20,9 @@ export default function Earnings() {
         <StatCard label="Wallet balance" value={money(bal)} tone={bal < 0 ? "red" : "green"} hint={bal < 0 ? "You owe commission on cash jobs" : "Will be settled weekly"} />
         <StatCard label="Gross service value" value={money(d.totals.gross)} />
         <StatCard label="Platform commission + GST" value={money(Number(d.totals.commission) + Number(d.totals.gst))} tone="amber" />
-        <StatCard label="Your net earnings" value={money(d.totals.net)} tone="green" />
+        <StatCard label="Your net earnings" value={money(d.totals.net)} tone="green" hint={`+ ${money(d.totals.tips)} tips for your team (pass on 100%)`} />
       </div>
-      <Tabs tabs={["commissions", "transactions", "settlements"]} value={tab} onChange={setTab} />
+      <Tabs tabs={["commissions", "transactions", "settlements", "tips"]} value={tab} onChange={setTab} />
       {tab === "commissions" && <DataTable rows={d.commissions} columns={[
         { key: "booking_no", label: "Booking" }, { key: "payment_mode", label: "Mode" }, { key: "service_value", label: "Service value", render: (r) => money(r.service_value) },
         { key: "commission_percent", label: "%", render: (r) => `${r.commission_percent}%` }, { key: "commission_amount", label: "Commission", render: (r) => money(r.commission_amount) },
@@ -36,6 +36,10 @@ export default function Earnings() {
       {tab === "settlements" && <DataTable rows={d.settlements} columns={[
         { key: "created_at", label: "Date", render: (r) => dateTime(r.created_at) }, { key: "amount", label: "Amount", render: (r) => money(r.amount) },
         { key: "status", label: "Status", render: (r) => <Badge status={r.status} /> }, { key: "utr", label: "UTR" },
+      ]} />}
+      {tab === "tips" && <DataTable rows={d.tips} empty="No tips yet" columns={[
+        { key: "paid_at", label: "Date", render: (r) => dateTime(r.paid_at) }, { key: "booking_no", label: "Booking" },
+        { key: "coworker", label: "Professional" }, { key: "amount", label: "Tip", render: (r) => money(r.amount) },
       ]} />}
       {topup && <PayModal open purpose="wallet_topup" amount={-bal} onClose={() => setTopup(false)} onPaid={() => qc.invalidateQueries({ queryKey: ["earnings"] })} />}
     </div>

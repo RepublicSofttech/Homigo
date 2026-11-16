@@ -25,6 +25,40 @@ function Timeline({ history }) {
   );
 }
 
+/** Gap C1: tip the professional after a completed job. 100% goes to the worker. */
+function TipCard({ booking, onDone }) {
+  const [amount, setAmount] = useState(50);
+  const [tip, setTip] = useState(null);
+  const name = booking.coworkers[0]?.name || "your professional";
+  if (booking.tip_paid) {
+    return <div className="card border-emerald-200 bg-emerald-50 text-sm text-emerald-800">You tipped {money(booking.tip_paid)} to {name}. Thank you!</div>;
+  }
+  const start = async () => {
+    try {
+      const { data } = await api.post(`/bookings/${booking.id}/tip/`, { amount });
+      setTip(data);
+    } catch (e) {
+      toast.error(errorMessage(e));
+    }
+  };
+  return (
+    <div className="card space-y-3">
+      <div>
+        <h3 className="font-semibold">Tip {name}</h3>
+        <p className="text-sm text-slate-500">100% of the tip goes to the professional.</p>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {[20, 50, 100, 200].map((v) => (
+          <button key={v} type="button" onClick={() => setAmount(v)} className={`rounded-full border px-4 py-1.5 text-sm font-medium ${amount === v ? "border-brand-600 bg-brand-50 text-brand-700" : "border-slate-200"}`}>₹{v}</button>
+        ))}
+        <input type="number" min={10} className="input w-28" placeholder="Other" value={[20, 50, 100, 200].includes(amount) ? "" : amount} onChange={(e) => setAmount(Number(e.target.value))} />
+      </div>
+      <button className="btn-primary" disabled={!amount || amount < 10} onClick={start}>Tip {money(amount)}</button>
+      {tip && <PayModal open purpose="tip" refId={tip.tip_id} amount={tip.amount} onClose={() => setTip(null)} onPaid={onDone} />}
+    </div>
+  );
+}
+
 function ReviewForm({ booking, onDone }) {
   const [rp, setRp] = useState(5);
   const [rc, setRc] = useState(5);
@@ -213,6 +247,8 @@ export default function BookingDetail() {
             </div>
           </div>
           {role === "customer" && s === "completed" && !b.has_review && <ReviewForm booking={b} onDone={() => qc.invalidateQueries({ queryKey: key })} />}
+          {role === "customer" && s === "completed" && <TipCard booking={b} onDone={() => qc.invalidateQueries({ queryKey: key })} />}
+          {role !== "customer" && b.tip_paid && <div className="card text-sm">Customer tipped <b>{money(b.tip_paid)}</b> — pass it 100% to {b.coworkers[0]?.name || "the professional"}.</div>}
           <div className="card">
             <h3 className="mb-3 font-semibold">Timeline</h3>
             <Timeline history={b.history} />
