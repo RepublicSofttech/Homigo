@@ -1,5 +1,6 @@
 import { Loader2, X } from "lucide-react";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { statusClass } from "../../lib/status";
 import { titleCase } from "../../lib/format";
 
@@ -76,7 +77,9 @@ export function Modal({ open, onClose, title, children, wide }) {
     return () => window.removeEventListener("keydown", esc);
   }, [open, onClose]);
   if (!open) return null;
-  return (
+  // Portal to <body>: a parent with backdrop-blur/transform (e.g. the sticky header) would otherwise
+  // trap this fixed overlay inside its own box and clip it.
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/50 p-4 pt-16" onClick={onClose}>
       <div className={`w-full ${wide ? "max-w-3xl" : "max-w-lg"} rounded-xl bg-white shadow-xl`} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between border-b px-5 py-3">
@@ -87,7 +90,8 @@ export function Modal({ open, onClose, title, children, wide }) {
         </div>
         <div className="max-h-[75vh] overflow-y-auto p-5">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
