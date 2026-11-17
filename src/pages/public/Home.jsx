@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, listOf } from "../../api/client";
 import AppDownload from "../../components/marketing/AppDownload";
+import BookingWheel from "../../components/marketing/BookingWheel";
 import Testimonials from "../../components/marketing/Testimonials";
 import { CountUp, Faq, Reveal } from "../../components/Reveal";
 import { FAQS } from "../../content/faqs";
@@ -31,12 +32,6 @@ export function ServiceCard({ s }) {
 
 const QUICK_SEARCHES = ["Tap leak", "AC service", "Deep cleaning", "Maid", "Electrician"];
 
-const STEPS = [
-  [Search, "Pick a service", "Search or browse, see the price upfront and choose a time slot that suits you."],
-  [UserCheck, "We match a verified pro", "The nearest verified partner accepts your job — or choose a provider yourself."],
-  [KeyRound, "Work starts with your OTP", "Share the start OTP only when the pro is at your door. Extra work needs your approval."],
-  [ThumbsUp, "Pay & rate", "Pay online or after service. Rate the job and add a tip if you loved it."],
-];
 
 const WHY = [
   [ShieldCheck, "Verified professionals", "Every partner passes business KYC. Every pro is ID-verified before their first job."],
@@ -100,7 +95,7 @@ export default function Home() {
   const search = (term) => nav(`/services?q=${encodeURIComponent(term)}`);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-clip">
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 text-white">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(245,158,11,0.18),transparent_55%)]" />
@@ -176,24 +171,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* How it works */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <Reveal><SectionTitle eyebrow="How it works" title="Book in minutes. Relax while we handle the rest." action={<Link to="/how-it-works" className="text-sm font-semibold text-brand-600 hover:text-brand-700">See full process →</Link>} /></Reveal>
-          <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map(([Icon, t, d], i) => (
-              <Reveal key={t} delay={i * 90}>
-                <li className="relative h-full list-none rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-                  <span className="absolute right-5 top-4 text-5xl font-extrabold text-slate-100">{i + 1}</span>
-                  <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 text-white"><Icon className="h-5 w-5" /></span>
-                  <p className="relative mt-4 font-semibold text-slate-900">{t}</p>
-                  <p className="relative mt-1 text-sm text-slate-600">{d}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <BookingWheel />
 
       {/* Popular services */}
       <section className="mx-auto max-w-6xl px-4 py-16">
