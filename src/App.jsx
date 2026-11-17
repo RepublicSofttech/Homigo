@@ -1,6 +1,6 @@
 import {
   BadgeCheck, BarChart3, Bell, BellRing, Briefcase, CalendarCheck, ClipboardList, CreditCard, Headphones, LayoutDashboard,
-  ListChecks, Settings as SettingsIcon, ShieldCheck, Star, Tag, UserCog, Users as UsersIcon, Wallet, Wrench, Quote,
+  ListChecks, Settings as SettingsIcon, ShieldCheck, Star, Tag, UserCog, Users as UsersIcon, Wallet, Wrench, Quote, MessagesSquare,
 } from "lucide-react";
 import { Route, Routes } from "react-router-dom";
 import BookingDetail from "./components/BookingDetail";
@@ -11,6 +11,7 @@ import RequireAuth from "./components/layout/RequireAuth";
 import { Empty } from "./components/ui";
 import AdminDashboard from "./pages/admin/Dashboard";
 import Verification from "./pages/admin/Verification";
+import AssistChats from "./pages/admin/AssistChats";
 import { AuditLogs, Catalogue, Coworkers, Finance, OffersAdmin, Partners, Plans, ReviewsModeration, Settings, TestimonialsAdmin, Users } from "./pages/admin/Admin";
 import Jobs from "./pages/coworker/Jobs";
 import Account from "./pages/customer/Account";
@@ -67,6 +68,7 @@ const adminMenu = [
   { to: "/admin/reviews", label: "Reviews", icon: Star },
   { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { to: "/admin/tickets", label: "Support tickets", icon: Headphones },
+  { to: "/admin/chats", label: "Chat sessions", icon: MessagesSquare },
   { to: "/admin/users", label: "Users & staff", icon: UserCog },
   { to: "/admin/settings", label: "Settings", icon: SettingsIcon },
   { to: "/admin/audit", label: "Audit logs", icon: ShieldCheck },
@@ -132,6 +134,7 @@ export default function App() {
         <Route path="reviews" element={<ReviewsModeration />} />
         <Route path="testimonials" element={<TestimonialsAdmin />} />
         <Route path="tickets" element={<Support admin />} />
+        <Route path="chats" element={<AssistChats />} />
         <Route path="users" element={<Users />} />
         <Route path="settings" element={<Settings />} />
         <Route path="audit" element={<AuditLogs />} />

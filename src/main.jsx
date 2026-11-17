@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import AssistWidget from "./components/AssistWidget";
 import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import { LocationProvider } from "./context/LocationContext";
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <AuthProvider>
           <LocationProvider>
             <App />
+            <AssistWidget />
             <Toaster position="top-center" />
           </LocationProvider>
         </AuthProvider>
