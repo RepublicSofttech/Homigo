@@ -64,7 +64,7 @@ export default function HowItWorks() {
   const flow = FLOWS[tab];
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-clip">
       <section className="bg-gradient-to-br from-brand-900 to-brand-700 text-white">
         <div className="mx-auto max-w-6xl px-4 py-14 text-center sm:py-20">
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-200">How it works</p>

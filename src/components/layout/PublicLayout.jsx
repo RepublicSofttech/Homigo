@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Bell, Home, LogOut, MapPin, Menu, User, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { SocialRail, SocialRow } from "../marketing/Social";
 import toast from "react-hot-toast";
 import { api } from "../../api/client";
 import { homePathFor, useAuth } from "../../context/AuthContext";
@@ -143,6 +144,7 @@ export default function PublicLayout() {
           </div>
         )}
       </header>
+      <SocialRail />
       <main className="flex-1">
         <Outlet />
       </main>
@@ -151,6 +153,7 @@ export default function PublicLayout() {
           <div>
             <Logo dark />
             <p className="mt-3 text-sm text-slate-400">Verified professionals at your doorstep. Plumbers, electricians, cleaning, maids, security and more.</p>
+            <SocialRow />
           </div>
           <div className="text-sm">
             <p className="mb-2 font-semibold text-white">For customers</p>
