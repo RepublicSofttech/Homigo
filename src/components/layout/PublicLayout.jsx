@@ -76,6 +76,7 @@ export default function PublicLayout() {
   const [menu, setMenu] = useState(false);
   const links = [
     { to: "/services", label: "Services" },
+    { to: "/how-it-works", label: "How it works" },
     { to: "/offers", label: "Offers" },
     ...(user?.user_type === "customer" ? [{ to: "/bookings", label: "My Bookings" }] : []),
   ];
@@ -146,19 +147,28 @@ export default function PublicLayout() {
         <Outlet />
       </main>
       <footer className="mt-16 bg-slate-900 text-slate-300">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Logo dark />
             <p className="mt-3 text-sm text-slate-400">Verified professionals at your doorstep. Plumbers, electricians, cleaning, maids, security and more.</p>
           </div>
           <div className="text-sm">
-            <p className="mb-2 font-semibold text-white">Company</p>
-            <Link to="/about" className="block py-1 hover:text-white">About us</Link>
-            <Link to="/partner/join" className="block py-1 hover:text-white">Become a partner</Link>
+            <p className="mb-2 font-semibold text-white">For customers</p>
+            <Link to="/services" className="block py-1 hover:text-white">All services</Link>
+            <Link to="/how-it-works" className="block py-1 hover:text-white">How it works</Link>
+            <Link to="/offers" className="block py-1 hover:text-white">Offers</Link>
             <Link to="/support" className="block py-1 hover:text-white">Help & support</Link>
           </div>
           <div className="text-sm">
-            <p className="mb-2 font-semibold text-white">Policies</p>
+            <p className="mb-2 font-semibold text-white">For partners</p>
+            <Link to="/partner/join" className="block py-1 hover:text-white">Become a partner</Link>
+            <Link to="/how-it-works?for=partner" className="block py-1 hover:text-white">How partnering works</Link>
+            <Link to="/partner/join#calculator" className="block py-1 hover:text-white">Earnings calculator</Link>
+            <Link to="/how-it-works?for=pro" className="block py-1 hover:text-white">For professionals</Link>
+          </div>
+          <div className="text-sm">
+            <p className="mb-2 font-semibold text-white">Company</p>
+            <Link to="/about" className="block py-1 hover:text-white">About us</Link>
             <p className="py-1">Terms & Conditions</p>
             <p className="py-1">Privacy Policy</p>
             <p className="py-1">Cancellation & Refund</p>
