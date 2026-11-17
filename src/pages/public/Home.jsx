@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  ArrowRight, BadgeCheck, CalendarCheck, CheckCircle2, Clock, CreditCard, Gift, KeyRound, MapPin, Quote, ReceiptText,
+  ArrowRight, BadgeCheck, CalendarCheck, CheckCircle2, Clock, CreditCard, Gift, KeyRound, MapPin, ReceiptText,
   Search, ShieldCheck, Star, ThumbsUp, UserCheck, Wrench,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, listOf } from "../../api/client";
+import AppDownload from "../../components/marketing/AppDownload";
+import Testimonials from "../../components/marketing/Testimonials";
 import { CountUp, Faq, Reveal } from "../../components/Reveal";
+import { FAQS } from "../../content/faqs";
 import { PageLoader } from "../../components/ui";
 import { useLocation2 } from "../../context/LocationContext";
 import { money, plural } from "../../lib/format";
@@ -44,14 +47,6 @@ const WHY = [
   [Wrench, "Pro brings the kit", "For many services the pro brings their own tools and supplies — just book and relax."],
 ];
 
-const FAQ = [
-  ["How are professionals verified?", "Every Area Partner goes through business KYC, bank and document checks before going live. Each professional on their team is ID-verified and approved before they can take a job."],
-  ["Can I choose my own professional?", "Yes. Either let us send the nearest available pro, or pick a specific provider from the list on the service page — you'll see their rating and distance."],
-  ["What if the job needs extra work?", "The pro adds the extra work in the app with the price. Nothing is charged unless you approve it."],
-  ["How do I pay?", "Choose “Pay after service” (cash or UPI) or pay online at booking. You'll get a clear bill with every item."],
-  ["Can I cancel or reschedule?", "Yes, from My Bookings. Cancelling well before the slot is free; a small fee may apply close to the visit time. You'll always see the fee before you confirm."],
-  ["Is my address safe?", "Your exact address is shared only with the partner who accepts your job, and only for that booking."],
-];
 
 function SectionTitle({ eyebrow, title, subtitle, action }) {
   return (
@@ -90,31 +85,6 @@ function StatsBand() {
             <p className="mt-2 text-sm text-slate-400">{s.label}</p>
           </Reveal>
         ))}
-      </div>
-    </section>
-  );
-}
-
-function Testimonials() {
-  const { data } = useQuery({ queryKey: ["public-reviews"], queryFn: () => api.get("/public/reviews/").then((r) => r.data), staleTime: 600000 });
-  if (!data?.length) return null;
-  return (
-    <section className="bg-slate-50 py-20">
-      <div className="mx-auto max-w-6xl px-4">
-        <Reveal><SectionTitle eyebrow="Reviews" title="What customers say" subtitle="Real reviews from completed bookings." /></Reveal>
-        <div className="-mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4">
-          {data.map((r) => (
-            <figure key={r.id} className="flex w-80 shrink-0 snap-start flex-col rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-              <Quote className="h-6 w-6 text-brand-200" />
-              <div className="mt-2 flex gap-0.5">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-accent-500 text-accent-500" : "text-slate-200"}`} />)}</div>
-              <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-slate-700">“{r.comment}”</blockquote>
-              <figcaption className="mt-4 border-t border-slate-100 pt-3 text-sm">
-                <p className="font-semibold text-slate-900">{r.customer}</p>
-                <p className="text-xs text-slate-500">{r.service} · {r.city}</p>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -275,7 +245,8 @@ export default function Home() {
       </section>
 
       <StatsBand />
-      <Testimonials />
+      <Testimonials audience="customer" eyebrow="Happy customers" title="Loved by homes near you" subtitle="Real words from real customers." />
+      <AppDownload audience="customer" />
 
       {/* FAQ */}
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-20 lg:grid-cols-3">
@@ -283,9 +254,12 @@ export default function Home() {
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">FAQ</p>
           <h2 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">Questions? We've got answers.</h2>
           <p className="mt-3 text-slate-600">Still need help? Our support team is a message away.</p>
-          <Link to="/support" className="btn mt-5 border border-slate-300 text-slate-700 hover:bg-slate-50">Contact support</Link>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link to="/faq" className="btn-primary">View all FAQs</Link>
+            <Link to="/support" className="btn border border-slate-300 text-slate-700 hover:bg-slate-50">Contact support</Link>
+          </div>
         </Reveal>
-        <Reveal delay={100} className="lg:col-span-2"><Faq items={FAQ} /></Reveal>
+        <Reveal delay={100} className="lg:col-span-2"><Faq items={FAQS.customer.slice(0, 5)} /></Reveal>
       </section>
 
       {/* Dual CTA */}

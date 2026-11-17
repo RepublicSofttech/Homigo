@@ -113,6 +113,7 @@ export default function HowItWorks() {
             <Home className="h-8 w-8 text-accent-500" />
             <p className="text-2xl font-bold">Ready when you are</p>
             <Link to={flow.cta[1]} className="btn mt-2 bg-accent-500 px-6 py-3 text-white hover:bg-accent-600">{flow.cta[0]} <ArrowRight className="h-4 w-4" /></Link>
+            <Link to={`/faq?for=${tab}`} className="text-sm text-slate-300 underline-offset-4 hover:text-white hover:underline">Read the FAQs</Link>
           </div>
         </Reveal>
       </section>

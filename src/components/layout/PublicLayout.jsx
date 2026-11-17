@@ -157,6 +157,7 @@ export default function PublicLayout() {
             <Link to="/services" className="block py-1 hover:text-white">All services</Link>
             <Link to="/how-it-works" className="block py-1 hover:text-white">How it works</Link>
             <Link to="/offers" className="block py-1 hover:text-white">Offers</Link>
+            <Link to="/faq" className="block py-1 hover:text-white">FAQs</Link>
             <Link to="/support" className="block py-1 hover:text-white">Help & support</Link>
           </div>
           <div className="text-sm">
@@ -164,6 +165,7 @@ export default function PublicLayout() {
             <Link to="/partner/join" className="block py-1 hover:text-white">Become a partner</Link>
             <Link to="/how-it-works?for=partner" className="block py-1 hover:text-white">How partnering works</Link>
             <Link to="/partner/join#calculator" className="block py-1 hover:text-white">Earnings calculator</Link>
+            <Link to="/faq?for=partner" className="block py-1 hover:text-white">Partner FAQs</Link>
             <Link to="/how-it-works?for=pro" className="block py-1 hover:text-white">For professionals</Link>
           </div>
           <div className="text-sm">
