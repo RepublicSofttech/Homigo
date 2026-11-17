@@ -28,7 +28,9 @@ import Login from "./pages/public/Login";
 import Notifications from "./pages/public/Notifications";
 import ServiceDetail from "./pages/public/ServiceDetail";
 import Services from "./pages/public/Services";
-import { About, Offers, PartnerJoin } from "./pages/public/Static";
+import HowItWorks from "./pages/public/HowItWorks";
+import PartnerJoin from "./pages/public/PartnerJoin";
+import { About, Offers } from "./pages/public/Static";
 
 const partnerMenu = [
   { to: "/partner", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -80,6 +82,7 @@ export default function App() {
         <Route path="offers" element={<Offers />} />
         <Route path="about" element={<About />} />
         <Route path="partner/join" element={<PartnerJoin />} />
+        <Route path="how-it-works" element={<HowItWorks />} />
         <Route path="login" element={<Login />} />
         <Route path="bookings" element={<RequireAuth roles={["customer"]}><div className="mx-auto max-w-6xl px-4 py-8"><BookingList title="My bookings" basePath="/bookings" showPartner /></div></RequireAuth>} />
         <Route path="bookings/:id" element={<RequireAuth roles={["customer"]}><div className="mx-auto max-w-6xl px-4 py-8"><BookingDetail /></div></RequireAuth>} />
