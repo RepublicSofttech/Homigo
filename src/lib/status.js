@@ -8,7 +8,7 @@ const COLORS = {
 };
 
 const MAP = {
-  completed: "green", approved: "green", active: "green", paid: "green", verified: "green", success: "green", resolved: "green",
+  completed: "green", published: "green", approved: "green", active: "green", paid: "green", verified: "green", success: "green", resolved: "green",
   confirmed: "blue", assigned: "blue", on_the_way: "blue", arrived: "blue", in_progress: "purple", in_review: "purple",
   under_review: "purple", completion_requested: "purple",
   pending_acceptance: "amber", searching: "amber", lost: "gray", payment_pending: "amber", pending: "amber", submitted: "amber", open: "amber",

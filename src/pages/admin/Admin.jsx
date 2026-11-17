@@ -268,3 +268,23 @@ export function AuditLogs() {
     </div>
   );
 }
+
+export function TestimonialsAdmin() {
+  const fields = [
+    { name: "audience", label: "Show on", type: "select", options: [{ value: "customer", label: "Customer pages (Home)" }, { value: "partner", label: "Partner page" }], required: true },
+    { name: "name", label: "Name (as they agreed to be shown)", required: true, hint: "e.g. Priya S." },
+    { name: "location", label: "City / area" },
+    { name: "role", label: "Service booked / business type", hint: "e.g. Deep cleaning, or Plumbing agency" },
+    { name: "rating", label: "Rating (1–5)", type: "number", required: true },
+    { name: "sort_order", label: "Order", type: "number" },
+    { name: "quote", label: "Their words", type: "textarea", required: true, hint: "Use their real words. Max 400 characters." },
+    { name: "consent", label: "This person agreed to be shown on the website", type: "checkbox" },
+    { name: "is_published", label: "Published", type: "checkbox" },
+  ];
+  return <CrudPage title="Testimonials" subtitle="Real customer and partner testimonials shown on the website. Publishing needs the person's consent."
+    endpoint="/admin/testimonials/"
+    columns={[{ key: "name", label: "Name" }, { key: "audience", label: "Shown on" }, { key: "role", label: "Service / business" }, { key: "rating", label: "Rating", render: (r) => "★".repeat(r.rating) },
+      { key: "quote", label: "Quote", render: (r) => <span className="line-clamp-2 max-w-xs text-xs">{r.quote}</span> },
+      { key: "is_published", label: "Status", render: (r) => <Badge status={r.is_published ? "published" : "draft"} /> }]}
+    fields={fields} defaults={{ audience: "customer", rating: 5, sort_order: 0, consent: false, is_published: false }} />;
+}

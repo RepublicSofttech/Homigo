@@ -1,6 +1,6 @@
 import {
   BadgeCheck, BarChart3, Bell, BellRing, Briefcase, CalendarCheck, ClipboardList, CreditCard, Headphones, LayoutDashboard,
-  ListChecks, Settings as SettingsIcon, ShieldCheck, Star, Tag, UserCog, Users as UsersIcon, Wallet, Wrench,
+  ListChecks, Settings as SettingsIcon, ShieldCheck, Star, Tag, UserCog, Users as UsersIcon, Wallet, Wrench, Quote,
 } from "lucide-react";
 import { Route, Routes } from "react-router-dom";
 import BookingDetail from "./components/BookingDetail";
@@ -11,7 +11,7 @@ import RequireAuth from "./components/layout/RequireAuth";
 import { Empty } from "./components/ui";
 import AdminDashboard from "./pages/admin/Dashboard";
 import Verification from "./pages/admin/Verification";
-import { AuditLogs, Catalogue, Coworkers, Finance, OffersAdmin, Partners, Plans, ReviewsModeration, Settings, Users } from "./pages/admin/Admin";
+import { AuditLogs, Catalogue, Coworkers, Finance, OffersAdmin, Partners, Plans, ReviewsModeration, Settings, TestimonialsAdmin, Users } from "./pages/admin/Admin";
 import Jobs from "./pages/coworker/Jobs";
 import Account from "./pages/customer/Account";
 import Support from "./pages/customer/Support";
@@ -28,6 +28,7 @@ import Login from "./pages/public/Login";
 import Notifications from "./pages/public/Notifications";
 import ServiceDetail from "./pages/public/ServiceDetail";
 import Services from "./pages/public/Services";
+import FaqPage from "./pages/public/FaqPage";
 import HowItWorks from "./pages/public/HowItWorks";
 import PartnerJoin from "./pages/public/PartnerJoin";
 import { About, Offers } from "./pages/public/Static";
@@ -64,6 +65,7 @@ const adminMenu = [
   { to: "/admin/offers", label: "Offers", icon: Tag },
   { to: "/admin/finance", label: "Finance", icon: Wallet },
   { to: "/admin/reviews", label: "Reviews", icon: Star },
+  { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { to: "/admin/tickets", label: "Support tickets", icon: Headphones },
   { to: "/admin/users", label: "Users & staff", icon: UserCog },
   { to: "/admin/settings", label: "Settings", icon: SettingsIcon },
@@ -83,6 +85,7 @@ export default function App() {
         <Route path="about" element={<About />} />
         <Route path="partner/join" element={<PartnerJoin />} />
         <Route path="how-it-works" element={<HowItWorks />} />
+        <Route path="faq" element={<FaqPage />} />
         <Route path="login" element={<Login />} />
         <Route path="bookings" element={<RequireAuth roles={["customer"]}><div className="mx-auto max-w-6xl px-4 py-8"><BookingList title="My bookings" basePath="/bookings" showPartner /></div></RequireAuth>} />
         <Route path="bookings/:id" element={<RequireAuth roles={["customer"]}><div className="mx-auto max-w-6xl px-4 py-8"><BookingDetail /></div></RequireAuth>} />
@@ -127,6 +130,7 @@ export default function App() {
         <Route path="offers" element={<OffersAdmin />} />
         <Route path="finance" element={<Finance />} />
         <Route path="reviews" element={<ReviewsModeration />} />
+        <Route path="testimonials" element={<TestimonialsAdmin />} />
         <Route path="tickets" element={<Support admin />} />
         <Route path="users" element={<Users />} />
         <Route path="settings" element={<Settings />} />
