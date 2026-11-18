@@ -10,6 +10,7 @@ export const CITIES = [
   { name: "Kolkata", lat: 22.5726, lng: 88.3639 },
   { name: "Pune", lat: 18.5204, lng: 73.8567 },
   { name: "Lucknow", lat: 26.8467, lng: 80.9462 },
+  { name: "Bhopal", lat: 23.2599, lng: 77.4126 },
 ];
 
 function load() {
